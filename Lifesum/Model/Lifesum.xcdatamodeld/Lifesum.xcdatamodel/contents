@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model userDefinedModelVersionIdentifier="" type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="9525" systemVersion="15D21" minimumToolsVersion="Xcode 7.0">
+    <entity name="Category" representedClassName="Lifesum.Category" syncable="YES">
+        <attribute name="headcategoryid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="id" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="foods" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Food" inverseName="category" inverseEntity="Food" syncable="YES"/>
+        <relationship name="headCategory" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="HeadCategory" inverseName="categories" inverseEntity="HeadCategory" syncable="YES"/>
+    </entity>
+    <entity name="Exercise" representedClassName="Lifesum.Exercise" syncable="YES">
+        <attribute name="calories" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="title_normalized" optional="YES" attributeType="String" syncable="YES"/>
+    </entity>
+    <entity name="Food" representedClassName="Lifesum.Food" syncable="YES">
+        <attribute name="calories" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="carbohydrates" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="categoryid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="fat" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="gramsperserving" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="language" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="protein" optional="YES" attributeType="Double" defaultValueString="0.0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="category" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Category" inverseName="foods" inverseEntity="Category" syncable="YES"/>
+    </entity>
+    <entity name="HeadCategory" representedClassName="Lifesum.HeadCategory" syncable="YES">
+        <attribute name="headcategoryid" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
+        <attribute name="title" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="categories" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Category" inverseName="headCategory" inverseEntity="Category" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="Category" positionX="-36" positionY="9" width="128" height="30"/>
+        <element name="Exercise" positionX="-54" positionY="-9" width="128" height="90"/>
+        <element name="Food" positionX="-63" positionY="-18" width="128" height="180"/>
+        <element name="HeadCategory" positionX="-45" positionY="54" width="128" height="30"/>
+    </elements>
+</model>
