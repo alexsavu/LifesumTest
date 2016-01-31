@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import SwiftyJSON
 
 final class Category: NSManagedObject {
     @NSManaged private(set) var id: Int16
@@ -14,6 +15,20 @@ final class Category: NSManagedObject {
     @NSManaged private(set) var headcategoryid: Int16
     @NSManaged private(set) var foods: Set<Food>
     @NSManaged private(set) var headCategory: HeadCategory
+    
+    static func extractJSON(array: [AnyObject], moc: NSManagedObjectContext) {
+        for jsonDict in array {
+            let json = JSON(jsonDict)
+            let name = json["category"].stringValue
+            let id: Int16 = json["oid"].int16Value
+            let headCategoryId = json["headcategoryid"].int16Value
+            if headCategoryId != 15 && headCategoryId != 20 {
+                let headCategoryTitle =  MainCategory.RootCategory.nameForHeadCategory(headCategoryId).rawValue
+                HeadCategory.insertIntoContext(moc, title: headCategoryTitle, headcategoryid: headCategoryId)
+                Category.insertIntoContext(moc, name: name, id: id, headcategoryid: headCategoryId)
+            }
+        }
+    }
     
     static func insertIntoContext(managedObjectContext: NSManagedObjectContext, name: String, id: Int16, headcategoryid: Int16) -> Category {
         let category = findOrCreateCategory(id, inContext: managedObjectContext)

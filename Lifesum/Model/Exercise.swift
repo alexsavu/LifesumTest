@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import SwiftyJSON
 
 final class Exercise: NSManagedObject {
     @NSManaged private(set) var primitiveTitle: String
@@ -27,6 +28,15 @@ final class Exercise: NSManagedObject {
     }
     static let titleKey = "title"
     static let normalizedTitleKey = "title_normalized"
+    
+    static func extractJSON(array: [AnyObject], moc: NSManagedObjectContext) {
+        for jsonDict in array {
+            let json = JSON(jsonDict)
+            let title = json["title"].stringValue
+            let calories = json["calories"].numberValue
+            Exercise.insertIntoContext(moc, title: title, calories: calories)
+        }
+    }
     
     static func insertIntoContext(managedObjectContext: NSManagedObjectContext, title: String, calories: NSNumber) -> Exercise {
         let exercise = findOrCreateExercise(title, inContext: managedObjectContext)

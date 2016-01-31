@@ -30,49 +30,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         guard let jsonArray = Parser.getCategoriesJSON() else {fatalError("Can't have a nil object")}
         
         moc.performChanges {
-            for jsonDict in jsonArray {
-                let json = JSON(jsonDict)
-                let name = json["category"].stringValue
-                let id: Int16 = json["oid"].int16Value
-                let headCategoryId = json["headcategoryid"].int16Value
-                if headCategoryId != 15 && headCategoryId != 20 {
-                    let headCategoryTitle =  MainCategory.RootCategory.nameForHeadCategory(headCategoryId).rawValue
-                    HeadCategory.insertIntoContext(moc, title: headCategoryTitle, headcategoryid: headCategoryId)
-                    Category.insertIntoContext(moc, name: name, id: id, headcategoryid: headCategoryId)
-                }
-            }
+            Category.extractJSON(jsonArray, moc: moc)
         }
     }
     
     private func loadFoods(moc: NSManagedObjectContext) {
         guard let jsonArray = Parser.getFoodJSON() else {fatalError("Failed getting the food json")}
         moc.performChanges {
-            for jsonDict in jsonArray {
-                let json = JSON(jsonDict)
-                let title = json["title"].stringValue
-                let protein = json["protein"].numberValue
-                let categoryid = json["categoryid"].int16Value
-                let gramsperserving = json["gramsperserving"].numberValue
-                let fat = json["fat"].numberValue
-                let carbohydrates = json["carbohydrates"].numberValue
-                let calories = json["calories"].int16Value
-                let language = json["language"].stringValue
-                if language == "en_US" {
-                    Food.insertIntoContext(moc, title: title, categoryid: categoryid, protein: protein, gramsperserving: gramsperserving, fat: fat, carbohydrates: carbohydrates, calories: calories, language: language)
-                }
-            }
+            Food.extractJSON(jsonArray, moc: moc)
         }
     }
     
     private func loadExercices(moc: NSManagedObjectContext) {
         guard let jsonArray = Parser.getExerciseJSON() else {fatalError("Failed getting the food json")}
         moc.performChanges {
-            for jsonDict in jsonArray {
-                let json = JSON(jsonDict)
-                let title = json["title"].stringValue
-                let calories = json["calories"].numberValue
-                Exercise.insertIntoContext(moc, title: title, calories: calories)
-            }
+            Exercise.extractJSON(jsonArray, moc: moc)
         }
     }
 

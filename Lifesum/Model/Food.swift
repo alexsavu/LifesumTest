@@ -7,6 +7,7 @@
 //
 
 import CoreData
+import SwiftyJSON
 
 final class Food: NSManagedObject {
     @NSManaged private(set) var title: String
@@ -18,6 +19,23 @@ final class Food: NSManagedObject {
     @NSManaged private(set) var calories: Int16
     @NSManaged private(set) var language: String
     @NSManaged private(set) var category: Category
+    
+    static func extractJSON(array: [AnyObject], moc: NSManagedObjectContext) {
+        for jsonDict in array {
+            let json = JSON(jsonDict)
+            let title = json["title"].stringValue
+            let protein = json["protein"].numberValue
+            let categoryid = json["categoryid"].int16Value
+            let gramsperserving = json["gramsperserving"].numberValue
+            let fat = json["fat"].numberValue
+            let carbohydrates = json["carbohydrates"].numberValue
+            let calories = json["calories"].int16Value
+            let language = json["language"].stringValue
+            if language == "en_US" {
+                Food.insertIntoContext(moc, title: title, categoryid: categoryid, protein: protein, gramsperserving: gramsperserving, fat: fat, carbohydrates: carbohydrates, calories: calories, language: language)
+            }
+        }
+    }
     
     static func insertIntoContext(managedObjectContext: NSManagedObjectContext,
                                                     title: String,
